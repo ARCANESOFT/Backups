@@ -3,7 +3,7 @@
 [![Travis Status][badge_build]](https://travis-ci.org/ARCANESOFT/Backups)
 [![Coverage Status][badge_coverage]](https://scrutinizer-ci.com/g/ARCANESOFT/Backups/?branch=master)
 [![Scrutinizer Code Quality][badge_quality]](https://scrutinizer-ci.com/g/ARCANESOFT/Backups/?branch=master)
-[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/[id])
+[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/cd174529-2cea-465b-a56e-536460847fe0)
 [![Github Issues][badge_issues]](https://github.com/ARCANESOFT/Backups/issues)
 
 [![Packagist][badge_package]](https://packagist.org/packages/arcanesoft/backups)
@@ -30,7 +30,7 @@ Any ideas are welcome. Feel free to submit any issues or pull requests, please c
 [badge_build]:     https://img.shields.io/travis/ARCANESOFT/Backups.svg?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANESOFT/Backups.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANESOFT/Backups.svg?style=flat-square
-[badge_insight]:   https://img.shields.io/sensiolabs/i/[id].svg?style=flat-square
+[badge_insight]:   https://img.shields.io/sensiolabs/i/cd174529-2cea-465b-a56e-536460847fe0.svg?style=flat-square
 [badge_issues]:    https://img.shields.io/github/issues/ARCANESOFT/Backups.svg?style=flat-square
 
 [badge_package]:   https://img.shields.io/badge/package-arcanesoft/backups-blue.svg?style=flat-square
