@@ -1,5 +1,5 @@
 @section('header')
-    <h1><i class="fa fa-fw fa-database"></i> {{ trans('foundation::backups.titles.backups') }} <small>{{ trans('foundation::backups.titles.monitor-status') }}</small></h1>
+    <h1><i class="fa fa-fw fa-database"></i> {{ trans('backups::statuses.titles.backups') }} <small>{{ trans('backups::statuses.titles.monitor-status') }}</small></h1>
 @endsection
 
 @section('content')
@@ -7,25 +7,25 @@
         <div class="col-md-4">
             <div class="box">
                 <div class="box-header with-border">
-                    <h2 class="box-title">{{ trans('foundation::backups.titles.monitor-status') }}</h2>
+                    <h2 class="box-title">{{ trans('backups::statuses.titles.monitor-status') }}</h2>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
                         <table class="table table-condensed no-margin">
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.name') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.name') }} :</th>
                                 <td>
                                     <span class="label label-inverse">{{ $status->backupName() }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.disk') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.disk') }} :</th>
                                 <td>
                                     <span class="label label-primary">{{ $status->diskName() }}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.reachable') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.reachable') }} :</th>
                                 <td>
                                     @if ($status->isReachable())
                                         <span class="label label-success">Yes</span>
@@ -35,7 +35,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.healthy') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.healthy') }} :</th>
                                 <td>
                                     @if ($status->isHealthy())
                                         <span class="label label-success">Yes</span>
@@ -45,7 +45,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.number_of_backups') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.number_of_backups') }} :</th>
                                 <td>
                                     @if ($status->isReachable())
                                         {{ label_count($status->amountOfBackups()) }}
@@ -55,7 +55,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.newest_backup') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.newest_backup') }} :</th>
                                 <td>
                                     @if ($status->isReachable())
                                         <small>{{ $status->dateOfNewestBackup() ?: 'null' }}</small>
@@ -65,7 +65,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>{{ trans('foundation::backups.attributes.used_storage') }} :</th>
+                                <th>{{ trans('backups::statuses.attributes.used_storage') }} :</th>
                                 <td>
                                     @if ($status->isReachable())
                                         <span class="label label-default">{{ $status->humanReadableUsedStorage() }}</span>
@@ -83,16 +83,16 @@
         <div class="col-md-8">
             <div class="box">
                 <div class="box-header with-border">
-                    <h2 class="box-title">{{ trans('foundation::backups.titles.backups') }}</h2>
+                    <h2 class="box-title">{{ trans('backups::statuses.titles.backups') }}</h2>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
                         <table class="table table-condensed no-margin">
                             <thead>
                                 <tr>
-                                    <th>{{ trans('foundation::backups.attributes.date') }}</th>
-                                    <th>{{ trans('foundation::backups.attributes.path') }}</th>
-                                    <th>{{ trans('foundation::backups.attributes.size') }}</th>
+                                    <th>{{ trans('backups::statuses.attributes.date') }}</th>
+                                    <th>{{ trans('backups::statuses.attributes.path') }}</th>
+                                    <th>{{ trans('backups::statuses.attributes.size') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
