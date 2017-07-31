@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Backups\Console;
 
+use Arcanedev\Support\Bases\Command;
 use Arcanesoft\Backups\BackupsServiceProvider;
 
 /**
@@ -8,7 +9,7 @@ use Arcanesoft\Backups\BackupsServiceProvider;
  * @package  Arcanesoft\Backups\Console
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PublishCommand extends AbstractCommand
+class PublishCommand extends Command
 {
     /* -----------------------------------------------------------------
      |  Properties
