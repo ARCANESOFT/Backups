@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Backups\Policies;
 
+use Arcanesoft\Core\Bases\Policy;
 use Arcanesoft\Contracts\Auth\Models\User;
 
 /**
@@ -8,7 +9,7 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Backups\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class StatusesPolicy extends AbstractPolicy
+class StatusesPolicy extends Policy
 {
     /* -----------------------------------------------------------------
      |  Constants
