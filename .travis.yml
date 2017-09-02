@@ -12,7 +12,7 @@ matrix:
     - php: nightly
 
 env:
-  - TESTBENCH_VERSION=3.4.*
+  - TESTBENCH_VERSION=3.5.*
 
 before_script:
   - travis_retry composer self-update
