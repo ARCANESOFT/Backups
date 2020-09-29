@@ -14,14 +14,12 @@
     "type":    "library",
     "license": "MIT",
     "require": {
-        "php":                   ">=7.0",
-        "arcanesoft/auth":       "~3.0",
-        "arcanesoft/core":       "~2.6",
-        "spatie/laravel-backup": "~5.0"
+        "php": "^7.3",
+        "arcanedev/laravel-backup": "^3.0",
+        "arcanesoft/foundation": "@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0",
-        "phpunit/phpcov":  "~4.0"
+        "phpunit/phpunit": "^9.3"
     },
     "autoload": {
         "psr-4": {
@@ -33,7 +31,20 @@
             "Arcanesoft\\Backups\\Tests\\": "tests/"
         }
     },
-    "scripts": {
-        "testbench": "composer require --dev \"orchestra/testbench=~3.5.0\""
-    }
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Arcanesoft\\Backups\\BackupsServiceProvider"
+            ]
+        },
+        "arcanesoft": {
+            "install": "Arcanesoft\\Backups\\Console\\InstallCommand",
+            "publish": "Arcanesoft\\Backups\\Console\\PublishCommand"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

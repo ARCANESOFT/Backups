@@ -1,7 +1,11 @@
-<?php namespace Arcanesoft\Backups\Policies;
+<?php
 
-use Arcanesoft\Core\Bases\Policy;
-use Arcanesoft\Contracts\Auth\Models\User;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Policies;
+
+use Arcanesoft\Foundation\Auth\Models\Administrator;
+use Arcanesoft\Foundation\Support\Auth\Policy;
 
 /**
  * Class     StatusesPolicy
@@ -12,14 +16,64 @@ use Arcanesoft\Contracts\Auth\Models\User;
 class StatusesPolicy extends Policy
 {
     /* -----------------------------------------------------------------
-     |  Constants
+     |  Getters
      | -----------------------------------------------------------------
      */
 
-    const PERMISSION_LIST     = 'backups.statuses.list';
-    const PERMISSION_SHOW     = 'backups.statuses.show';
-    const PERMISSION_CREATE   = 'backups.statuses.create';
-    const PERMISSION_DELETE   = 'backups.statuses.delete';
+    /**
+     * Get the ability's prefix.
+     *
+     * @return string
+     */
+    protected static function prefix(): string
+    {
+        return 'admin::backups.statuses.';
+    }
+
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the policy's abilities.
+     *
+     * @return \Arcanedev\LaravelPolicies\Ability[]|iterable
+     */
+    public function abilities(): iterable
+    {
+        $this->setMetas([
+            'category' => 'Statuses',
+        ]);
+
+        return [
+
+            // admin::backups.statuses.index
+            $this->makeAbility('index')->setMetas([
+                'name'        => 'Show all backup statuses',
+                'description' => 'Ability to list all backup statuses',
+            ]),
+
+            // admin::backups.statuses.show
+            $this->makeAbility('show')->setMetas([
+                'name'        => 'Show a backup status',
+                'description' => 'Ability to show a backup status',
+            ]),
+
+            // admin::backups.statuses.create
+            $this->makeAbility('create')->setMetas([
+                'name'        => 'Create a backup',
+                'description' => 'Ability to create a backup',
+            ]),
+
+            // admin::backups.statuses.clean
+            $this->makeAbility('clean')->setMetas([
+                'name'        => 'Clean backups',
+                'description' => 'Ability to clean old backups',
+            ]),
+
+        ];
+    }
 
     /* -----------------------------------------------------------------
      |  Abilities
@@ -29,48 +83,48 @@ class StatusesPolicy extends Policy
     /**
      * Allow to list all the backups.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \Arcanesoft\Foundation\Auth\Models\Administrator|mixed  $administrator
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function listPolicy(User $user)
+    public function index(Administrator $administrator)
     {
-        return $user->may(static::PERMISSION_LIST);
+        //
     }
 
     /**
      * Allow to display a backup.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \Arcanesoft\Foundation\Auth\Models\Administrator|mixed  $administrator
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function showPolicy(User $user)
+    public function show(Administrator $administrator)
     {
-        return $user->may(static::PERMISSION_SHOW);
+        //
     }
 
     /**
      * Allow to create a backup.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \Arcanesoft\Foundation\Auth\Models\Administrator|mixed  $administrator
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function createPolicy(User $user)
+    public function create(Administrator $administrator)
     {
-        return $user->may(static::PERMISSION_CREATE);
+        //
     }
 
     /**
-     * Allow to delete a backup.
+     * Allow to clean backups.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \Arcanesoft\Foundation\Auth\Models\Administrator|mixed  $administrator
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function deletePolicy(User $user)
+    public function clean(Administrator $administrator)
     {
-        return $user->may(static::PERMISSION_DELETE);
+        //
     }
 }

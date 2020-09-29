@@ -1,14 +1,18 @@
-<?php namespace Arcanesoft\Backups\Http\Controllers\Admin;
+<?php
 
-use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Http\Controllers;
+
 use Arcanesoft\Backups\Policies\StatusesPolicy;
-use Arcanesoft\Backups\Services\BackupStatuses;
+use Arcanesoft\Backups\Services\BackupService;
+use Arcanesoft\Foundation\Support\Traits\HasNotifications;
 use Illuminate\Support\Facades\Log;
 
 /**
  * Class     StatusesController
  *
- * @package  Arcanesoft\Backups\Http\Controllers\Admin
+ * @package  Arcanesoft\Backups\Http\Controllers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class StatusesController extends Controller
@@ -18,7 +22,15 @@ class StatusesController extends Controller
      | -----------------------------------------------------------------
      */
 
-    use JsonResponses;
+    use HasNotifications;
+
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+
+    /** @var  \Arcanesoft\Backups\Services\BackupService */
+    protected $backupService;
 
     /* -----------------------------------------------------------------
      |  Constructor
@@ -28,12 +40,14 @@ class StatusesController extends Controller
     /**
      * StatusesController constructor.
      */
-    public function __construct()
+    public function __construct(BackupService $backupService)
     {
         parent::__construct();
 
-        $this->setCurrentPage('backups-statuses');
-        $this->addBreadcrumbRoute(trans('backups::statuses.titles.backups'), 'admin::backups.statuses.index');
+        $this->setCurrentSidebarItem('foundation::backups');
+        $this->addBreadcrumbRoute(__('Backups'), 'admin::backups.statuses.index');
+
+        $this->backupService = $backupService;
     }
 
     /* -----------------------------------------------------------------
@@ -43,55 +57,56 @@ class StatusesController extends Controller
 
     public function index()
     {
-        $this->authorize(StatusesPolicy::PERMISSION_LIST);
+        $this->authorize(StatusesPolicy::ability('index'));
 
-        $statuses = BackupStatuses::all();
+        $statuses = $this->backupService->statuses();
 
-        $this->setTitle($title = trans('backups::statuses.titles.monitor-statuses-list'));
+        $this->setTitle($title = __('List of Monitor Statuses'));
         $this->addBreadcrumb($title);
 
-        return $this->view('admin.statuses.index', compact('statuses'));
+        return $this->view('statuses.index', compact('statuses'));
     }
 
     public function show($index)
     {
-        $this->authorize(StatusesPolicy::PERMISSION_SHOW);
+        $this->authorize(StatusesPolicy::ability('show'));
 
-        if (is_null($status = BackupStatuses::getStatus($index)))
-            self::pageNotFound();
+        $status = $this->backupService->getStatus($index);
 
-        $backups = $status->backupDestination()->backups();
+        abort_if(is_null($status), 404);
 
-        $this->setTitle($title = trans('backups::statuses.titles.monitor-status'));
+        $this->setTitle($title = __('Monitor Status'));
         $this->addBreadcrumb($title);
 
-        return $this->view('admin.statuses.show', compact('status', 'backups'));
+        return $this->view('statuses.show', compact('status'));
     }
 
     public function backup()
     {
-        $this->authorize(StatusesPolicy::PERMISSION_CREATE);
+        $this->authorize(StatusesPolicy::ability('create'));
 
-        if (BackupStatuses::runBackups()) {
-            return $this->jsonResponseSuccess([
+        if ($this->backupService->runBackups()) {
+            return static::jsonResponseSuccess([
                 'message' => $this->transNotification('created'),
             ]);
         }
 
-        return $this->jsonResponseError(['message' => 'There is an error while running the backups.']);
+        return static::jsonResponseError([
+            'message' => 'There is an error while running the backups.'
+        ]);
     }
 
     public function clear()
     {
-        $this->authorize(StatusesPolicy::PERMISSION_DELETE);
+        $this->authorize(StatusesPolicy::ability('clean'));
 
-        if (BackupStatuses::clearBackups()) {
-            return $this->jsonResponseSuccess([
+        if ($this->backupService->clearBackups()) {
+            return static::jsonResponseSuccess([
                 'message' => $this->transNotification('cleared'),
             ]);
         }
 
-        return $this->jsonResponseError(['message' => 'There is an error while running the backups.']);
+        return static::jsonResponseError(['message' => 'There is an error while running the backups.']);
     }
 
     /* -----------------------------------------------------------------
@@ -114,7 +129,7 @@ class StatusesController extends Controller
         $message = trans("backups::statuses.messages.{$action}.message", $replace);
 
         Log::info($message, $context);
-        $this->notifySuccess($message, $title);
+        static::notifySuccess($title, $message);
 
         return $message;
     }

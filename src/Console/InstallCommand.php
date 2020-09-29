@@ -1,7 +1,11 @@
-<?php namespace Arcanesoft\Backups\Console;
+<?php
 
-use Arcanedev\Support\Bases\Command;
-use Arcanesoft\Backups\Seeds\DatabaseSeeder;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Console;
+
+use Arcanesoft\Backups\Database\DatabaseSeeder;
+use Arcanesoft\Foundation\Support\Console\InstallCommand as Command;
 
 /**
  * Class     InstallCommand
@@ -21,7 +25,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature   = 'backups:install';
+    protected $signature = 'backups:install';
 
     /**
      * The console command description.
@@ -38,8 +42,8 @@ class InstallCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        $this->call('db:seed', ['--class' => DatabaseSeeder::class]);
+        $this->seed(DatabaseSeeder::class);
     }
 }

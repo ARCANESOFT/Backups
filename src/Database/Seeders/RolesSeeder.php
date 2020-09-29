@@ -1,14 +1,18 @@
-<?php namespace Arcanesoft\Backups\Seeds;
+<?php
 
-use Arcanesoft\Auth\Seeds\RolesSeeder;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Database\Seeders;
+
+use Arcanesoft\Foundation\Core\Database\RolesSeeder as Seeder;
 
 /**
- * Class     RolesTableSeeder
+ * Class     RolesSeeder
  *
- * @package  Arcanesoft\Backups\Seeds
+ * @package  Arcanesoft\Backups\Database\Seeders
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RolesTableSeeder extends RolesSeeder
+class RolesSeeder extends Seeder
 {
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -18,9 +22,9 @@ class RolesTableSeeder extends RolesSeeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
-        $this->seed([
+        $this->seedMany([
             [
                 'name'        => 'Backups Manager',
                 'description' => 'The Backups manager role.',
@@ -28,9 +32,10 @@ class RolesTableSeeder extends RolesSeeder
             ],
         ]);
 
-        $this->syncAdminRole();
-        $this->syncRoles([
-            'backups-manager' => 'backups.',
+        $this->syncRolesWithPermissions([
+            'backups-manager' => [
+                'admin::backups.*',
+            ],
         ]);
     }
 }
