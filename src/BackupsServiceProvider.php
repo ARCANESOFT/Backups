@@ -10,7 +10,6 @@ use Arcanesoft\Foundation\Support\Providers\PackageServiceProvider;
 /**
  * Class     BackupsServiceProvider
  *
- * @package  Arcanesoft\Backups
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class BackupsServiceProvider extends PackageServiceProvider

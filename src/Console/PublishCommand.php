@@ -10,7 +10,6 @@ use Illuminate\Console\Command;
 /**
  * Class     PublishCommand
  *
- * @package  Arcanesoft\Backups\Console
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class PublishCommand extends Command

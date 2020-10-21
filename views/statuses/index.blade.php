@@ -5,36 +5,36 @@
 @endsection
 
 @section('content')
-    <div class="card card-borderless shadow-sm">
-        <div class="card-header px-2">
+    <x-arc:card>
+        <x-arc:card-header>
             <div class="d-flex justify-content-between">
                 <span class="d-inline-block">@lang('Monitor Statuses')</span>
                 <div>
                     @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('create'))
-                        <a class="btn btn-xs btn-success" onclick="Foundation.$emit('backups::backups.create')">
+                        <a class="btn btn-xs btn-success" onclick="ARCANESOFT.emit('backups::backups.create')">
                             <i class="far fa-fw fa-save"></i> @lang('Run Backup')
                         </a>
                     @endcan
 
                     @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('delete'))
-                        <button class="btn btn-xs btn-warning" onclick="Foundation.$emit('backups::backups.clear')">
+                        <button class="btn btn-xs btn-warning" onclick="ARCANESOFT.emit('backups::backups.clear')">
                             <i class="fas fa-fw fa-eraser"></i> @lang('Clear Backups')
                         </button>
                     @endcan
                 </div>
             </div>
-        </div>
-        <table class="table table-condensed table-hover mb-0">
+        </x-arc:card-header>
+        <x-arc:card-table class="table-hover">
             <thead>
                 <tr>
-                    <th class="font-weight-light text-uppercase text-muted">@lang('Disk')</th>
-                    <th class="font-weight-light text-uppercase text-muted">@lang('Name')</th>
-                    <th class="font-weight-light text-uppercase text-muted text-center">@lang('Reachable')</th>
-                    <th class="font-weight-light text-uppercase text-muted text-center">@lang('Healthy')</th>
-                    <th class="font-weight-light text-uppercase text-muted text-center">@lang('Backups')</th>
-                    <th class="font-weight-light text-uppercase text-muted text-center">@lang('Newest Backup')</th>
-                    <th class="font-weight-light text-uppercase text-muted text-center">@lang('Used Storage')</th>
-                    <th class="font-weight-light text-uppercase text-muted text-right">@lang('Actions')</th>
+                    <x-arc:table-th>@lang('Disk')</x-arc:table-th>
+                    <x-arc:table-th>@lang('Name')</x-arc:table-th>
+                    <x-arc:table-th class="text-center">@lang('Reachable')</x-arc:table-th>
+                    <x-arc:table-th class="text-center">@lang('Healthy')</x-arc:table-th>
+                    <x-arc:table-th class="text-center">@lang('Backups')</x-arc:table-th>
+                    <x-arc:table-th class="text-center">@lang('Newest Backup')</x-arc:table-th>
+                    <x-arc:table-th class="text-center">@lang('Used Storage')</x-arc:table-th>
+                    <x-arc:table-th class="text-right">@lang('Actions')</x-arc:table-th>
                 </tr>
             </thead>
             <tbody>
@@ -44,100 +44,99 @@
                 $destination = $status->backupDestination()
                 ?>
                 <tr>
-                    <td class="font-monospace">{{ $destination->diskName() }}</td>
-                    <td>{{ $destination->backupName() }}</td>
-                    <td class="text-center">
+                    <td class="small font-monospace">{{ $destination->diskName() }}</td>
+                    <td class="small">{{ $destination->backupName() }}</td>
+                    <td class="small text-center">
                         @if ($destination->isReachable())
-                            <span class="badge badge-outline-success">@lang('Yes')</span>
+                            <span class="badge border border-success text-muted">@lang('Yes')</span>
                         @else
-                            <span class="badge badge-outline-danger">@lang('No')</span>
+                            <span class="badge border border-danger text-muted">@lang('No')</span>
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td class="small text-center">
                         @if ($status->isHealthy())
-                            <span class="badge badge-outline-success">@lang('Yes')</span>
+                            <span class="badge border border-success text-muted">@lang('Yes')</span>
                         @else
-                            <span class="badge badge-outline-danger">@lang('No')</span>
+                            <span class="badge border border-danger text-muted">@lang('No')</span>
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td class="small text-center">
                         @if ($destination->isReachable())
                             {{ arcanesoft\ui\count_pill($destination->backups()->count()) }}
                         @else
-                            <span class="badge badge-default">-</span>
+                            <span class="badge text-muted">-</span>
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td class="small text-center">
                         @if ($destination->isReachable() && $destination->newestBackup())
-                            <small>{{ $destination->newestBackup()->date()->diffForHumans() ?: 'No backups present' }}</small>
+                            {{ $destination->newestBackup()->date()->diffForHumans() ?: 'No backups present' }}
                         @else
-                            <span class="badge badge-default">-</span>
+                            <span class="badge text-muted">-</span>
                         @endif
                     </td>
-                    <td class="font-weight-bold text-muted text-center small">
-                        {{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}
+                    <td class="small text-center text-muted">
+                        <span class="badge text-muted">{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}</span>
                     </td>
                     <td class="text-right">
                         @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('show'))
-                            {{ arcanesoft\ui\action_link_icon('show', route('admin::backups.statuses.show', [$index]))->size('sm') }}
+                            <a href="{{ route('admin::backups.statuses.show', [$index]) }}"
+                               class="btn btn-sm btn-light" data-toggle="tooltip" title="@lang('Show')">
+                                <i class="far fa-fw fa-eye"></i>
+                            </a>
                         @endcan
                     </td>
                 </tr>
             @empty
             @endforelse
             </tbody>
-        </table>
-    </div>
+        </x-arc:card-table>
+    </x-arc:card>
 @endsection
 
 {{-- CREATE BACKUP MODAL/SCRIPT --}}
 @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('create'))
     @push('modals')
-        <div id="run-backups-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                {{ form()->open(['route' => 'admin::backups.statuses.backup', 'method' => 'POST', 'id' => 'run-backups-form', 'class' => '', 'autocomplete' => 'off']) }}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modelTitleId">@lang('Run Backup')</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        @lang('Are you sure you want to run the backup ?')
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        {{ arcanesoft\ui\action_button('cancel')->attribute('data-dismiss', 'modal') }}
-                        <button class="btn btn-success" type="submit">@lang('Backup')</button>
-                    </div>
-                </div>
-                {{ form()->close() }}
-            </div>
-        </div>
+        <x-arc:modal id="run-backups-modal" aria-labelledby="run-backups-modal-title" data-backdrop="static">
+            {{ form()->open(['route' => 'admin::backups.statuses.backup', 'method' => 'POST', 'id' => 'run-backups-form', 'autocomplete' => 'off']) }}
+                <x-arc:modal-header>
+                    <x-arc:modal-title id="run-backups-modal-title">
+                        @lang('Run Backup')
+                    </x-arc:modal-title>
+                </x-arc:modal-header>
+                <x-arc:modal-body>
+                    @lang('Are you sure you want to run the backup ?')
+                </x-arc:modal-body>
+                <x-arc:modal-footer class="justify-content-between">
+                    <x-arc:modal-cancel-button/>
+                    <button class="btn btn-success" type="submit">@lang('Backup')</button>
+                </x-arc:modal-footer>
+            {{ form()->close() }}
+        </x-arc:modal>
     @endpush
 
     @push('scripts')
         <script>
             let runBackupsModal = twbs.Modal.make('div#run-backups-modal')
-            let runBackupsForm  = Form.make('form#run-backups-form')
+            let runBackupsForm  = components.form('form#run-backups-form')
 
-            Foundation.$on('backups::backups.create', () => {
+            ARCANESOFT.on('backups::backups.create', () => {
                 runBackupsModal.show()
             })
 
             runBackupsForm.on('submit', (event) => {
                 event.preventDefault()
 
-                let submitBtn = Foundation.ui.loadingButton(
+                let submitBtn = components.loadingButton(
                     runBackupsForm.elt().querySelector('button[type="submit"]')
                 )
 
                 submitBtn.loading()
 
-                request()
+                ARCANESOFT
+                    .request()
                     .post(runBackupsForm.getAction())
-                    .then((response) => {
-                        if (response.data.code === 'success') {
+                    .then(({data}) => {
+                        if (data.code === 'success') {
                             runBackupsModal.hide()
                             location.reload()
                         }
@@ -185,22 +184,23 @@
     @push('scripts')
         <script>
             let clearBackupsModal = twbs.Modal.make('div#clear-backups-modal')
-            let clearBackupsForm  = Form.make('form#clear-backups-form')
+            let clearBackupsForm  = components.form('form#clear-backups-form')
 
-            Foundation.$on('backups::backups.clear', () => {
+            ARCANESOFT.on('backups::backups.clear', () => {
                 clearBackupsModal.show()
             })
 
             clearBackupsForm.on('submit', (event) => {
                 event.preventDefault()
 
-                let submitBtn = Foundation.ui.loadingButton(
+                let submitBtn = components.loadingButton(
                     clearBackupsForm.elt().querySelector('button[type="submit"]')
                 )
 
                 submitBtn.loading()
 
-                request()
+                ARCANESOFT
+                    .request()
                     .post(clearBackupsForm.getAction())
                     .then(function (response) {
                         if (response.data.code === 'success') {

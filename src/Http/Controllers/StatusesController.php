@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Log;
 /**
  * Class     StatusesController
  *
- * @package  Arcanesoft\Backups\Http\Controllers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class StatusesController extends Controller
@@ -129,7 +128,8 @@ class StatusesController extends Controller
         $message = trans("backups::statuses.messages.{$action}.message", $replace);
 
         Log::info($message, $context);
-        static::notifySuccess($title, $message);
+
+        $this->notifySuccess($title, $message);
 
         return $message;
     }

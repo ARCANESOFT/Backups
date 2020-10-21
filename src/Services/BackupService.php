@@ -9,9 +9,8 @@ use Arcanedev\LaravelBackup\Actions\Cleanup\CleanAction;
 use Arcanedev\LaravelBackup\Entities\{BackupDestinationStatus, BackupDestinationStatusCollection};
 
 /**
- * Class     BackupStatuses
+ * Class     BackupService
  *
- * @package  Arcanesoft\Backups\Services
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class BackupService
@@ -64,7 +63,7 @@ class BackupService
      *
      * @param  int  $index
      *
-     * @return \Spatie\Backup\Tasks\Monitor\BackupDestinationStatus|null
+     * @return \Arcanedev\LaravelBackup\Entities\BackupDestinationStatus|null
      */
     public function getStatus($index): ?BackupDestinationStatus
     {
@@ -80,10 +79,17 @@ class BackupService
      */
     public function runBackups($disk = null): bool
     {
+        $options = [
+            'filename'              => null,
+            'only-db'               => false,
+            'db-name'               => [],
+            'only-files'            => false,
+            'only-to-disk'          => $disk,
+            'disable-notifications' => false,
+        ];
+
         try {
-            $this->backupAction->execute([
-                //
-            ]);
+            $this->backupAction->execute($options);
 
             return true;
         }

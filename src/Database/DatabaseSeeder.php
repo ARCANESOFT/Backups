@@ -10,7 +10,6 @@ use Arcanesoft\Foundation\Support\Database\Seeder;
 /**
  * Class     DatabaseSeeder
  *
- * @package  Arcanesoft\Backups\Database
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class DatabaseSeeder extends Seeder

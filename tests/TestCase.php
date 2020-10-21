@@ -1,11 +1,14 @@
-<?php namespace Arcanesoft\Backups\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
  * Class     TestCase
  *
- * @package  Arcanesoft\Backups\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class TestCase extends BaseTestCase

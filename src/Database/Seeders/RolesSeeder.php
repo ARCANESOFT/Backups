@@ -9,7 +9,6 @@ use Arcanesoft\Foundation\Core\Database\RolesSeeder as Seeder;
 /**
  * Class     RolesSeeder
  *
- * @package  Arcanesoft\Backups\Database\Seeders
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class RolesSeeder extends Seeder

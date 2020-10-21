@@ -10,7 +10,6 @@ use Arcanesoft\Foundation\Support\Auth\Policy;
 /**
  * Class     StatusesPolicy
  *
- * @package  Arcanesoft\Backups\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class StatusesPolicy extends Policy

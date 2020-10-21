@@ -31,7 +31,14 @@
             "Arcanesoft\\Backups\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "phpunit",
+        "test:dox": "phpunit --testdox"
+    },
     "extra": {
+        "branch-alias": {
+            "dev-develop": "4.x-dev"
+        },
         "laravel": {
             "providers": [
                 "Arcanesoft\\Backups\\BackupsServiceProvider"

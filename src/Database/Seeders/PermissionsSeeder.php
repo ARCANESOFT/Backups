@@ -9,7 +9,6 @@ use Arcanesoft\Foundation\Core\Database\PermissionsSeeder as Seeder;
 /**
  * Class     PermissionsSeeder
  *
- * @package  Arcanesoft\Backups\Database\Seeders
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class PermissionsSeeder extends Seeder

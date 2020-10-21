@@ -1,11 +1,15 @@
-<?php namespace Arcanesoft\Backups\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Tests\Unit;
 
 use Arcanesoft\Backups\BackupsServiceProvider;
+use Arcanesoft\Backups\Tests\TestCase;
 
 /**
  * Class     BackupsServiceProviderTest
  *
- * @package  Arcanesoft\Backups\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class BackupsServiceProviderTest extends TestCase

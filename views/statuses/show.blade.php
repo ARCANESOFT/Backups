@@ -12,114 +12,101 @@ $destination = $status->backupDestination()
 @section('content')
     <div class="row">
         <div class="col-md-4">
-            <div class="card card-borderless shadow-sm mb-3">
-                <div class="card-header">@lang('Monitor Status')</div>
-                <table class="table table-condensed mb-0">
+            <x-arc:card>
+                <x-arc:card-header>@lang('Monitor Status')</x-arc:card-header>
+                <x-arc:card-table>
                     <tr>
-                        <th>@lang('Name') :</th>
-                        <td class="text-right">
-                            <span class="badge badge-outline-dark">{{ $destination->backupName() }}</span>
-                        </td>
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Name')</th>
+                        <td class="text-right small">{{ $destination->backupName() }}</td>
                     </tr>
                     <tr>
-                        <th>@lang('Disk') :</th>
-                        <td class="text-right">
-                            <span class="badge badge-outline-primary">{{ $destination->diskName() }}</span>
-                        </td>
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Disk')</th>
+                        <td class="text-right small font-monospace">{{ $destination->diskName() }}</td>
                     </tr>
                     <tr>
-                        <th>@lang('Reachable') :</th>
-                        <td class="text-right">
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Reachable')</th>
+                        <td class="text-right small">
                             @if ($destination->isReachable())
-                                <span class="badge badge-outline-success">@lang('Yes')</span>
+                                <span class="badge border border-success text-muted">@lang('Yes')</span>
                             @else
-                                <span class="badge badge-outline-danger">@lang('No')</span>
+                                <span class="badge border border-danger text-muted">@lang('No')</span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th>@lang('Healthy') :</th>
-                        <td class="text-right">
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Healthy')</th>
+                        <td class="text-right small">
                             @if ($status->isHealthy())
-                                <span class="badge badge-outline-success">@lang('Yes')</span>
+                                <span class="badge border border-success text-muted">@lang('Yes')</span>
                             @else
-                                <span class="badge badge-outline-danger">@lang('No')</span>
+                                <span class="badge border border-danger text-muted">@lang('No')</span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th>@lang('Backups') :</th>
-                        <td class="text-right">
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Backups')</th>
+                        <td class="text-right small">
                             @if ($destination->isReachable())
                                 {{ arcanesoft\ui\count_pill($destination->backups()->count()) }}
                             @else
-                                <span class="badge badge-default">-</span>
+                                <span class="badge text-muted">-</span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th>@lang('Newest Backup') :</th>
-                        <td class="text-right">
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Newest Backup')</th>
+                        <td class="text-right small">
                             @if ($destination->isReachable() && $destination->newestBackup())
                                 <small>{{ $destination->newestBackup()->date()->diffForHumans() ?: 'null' }}</small>
                             @else
-                                <span class="badge badge-default">-</span>
+                                <span class="badge text-muted">-</span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th>@lang('Used Storage') :</th>
-                        <td class="text-right">
-                            <span class="badge badge-light">
-                                {{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}
-                            </span>
+                        <th class="font-weight-light text-uppercase text-muted">@lang('Used Storage')</th>
+                        <td class="text-right small">
+                            <span class="badge text-muted">{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}</span>
                         </td>
                     </tr>
-                </table>
-            </div>
+                </x-arc:card-table>
+            </x-arc:card>
         </div>
 
         <div class="col-md-8">
-            <div class="card card-borderless shadow-sm mb-3">
-                <div class="card-header">
-                    @lang('Backups')
-                </div>
-                <div class="box-body no-padding">
-                    <div class="table-responsive">
-                        <table class="table table-condensed mb-0">
-                            <thead>
-                                <tr>
-                                    <th>@lang('Date')</th>
-                                    <th>@lang('Path')</th>
-                                    <th class="text-right">@lang('Size')</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($destination->backups() as $backup)
-                                    <?php /** @var  Arcanedev\LaravelBackup\Entities\Backup  $backup */ ?>
-                                    <tr>
-                                        <td>
-                                            <small>{{ $backup->date() }}</small>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-inverse">{{ $backup->path() }}</span>
-                                        </td>
-                                        <td class="text-right">
-                                            <span class="badge badge-default">
-                                                {{ $backup->humanReadableSize() }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center">There is no backups for the time being</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            {{-- BACKUPS --}}
+            <x-arc:card>
+                <x-arc:card-header>@lang('Backups')</x-arc:card-header>
+                <x-arc:card-table class="table-hover">
+                    <thead>
+                        <tr>
+                            <x-arc:table-th>@lang('Date')</x-arc:table-th>
+                            <x-arc:table-th>@lang('Path')</x-arc:table-th>
+                            <x-arc:table-th class="text-right">@lang('Size')</x-arc:table-th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @forelse ($destination->backups() as $backup)
+                        <?php /** @var  Arcanedev\LaravelBackup\Entities\Backup  $backup */ ?>
+                        <tr>
+                            <td>
+                                <small>{{ $backup->date() }}</small>
+                            </td>
+                            <td>
+                                <span class="badge badge-inverse">{{ $backup->path() }}</span>
+                            </td>
+                            <td class="text-right">
+                                <span class="badge badge-default">{{ $backup->humanReadableSize() }}</span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center text-muted small">@lang('There is no backups for the time being')</td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </x-arc:card-table>
+            </x-arc:card>
         </div>
     </div>
 @endsection

@@ -7,9 +7,8 @@ namespace Arcanesoft\Backups\Providers;
 use Arcanesoft\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 /**
- * Class     AuthorizationServiceProvider
+ * Class     AuthServiceProvider
  *
- * @package  Arcanesoft\Backups\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class AuthServiceProvider extends ServiceProvider
