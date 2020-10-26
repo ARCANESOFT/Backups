@@ -16,15 +16,15 @@ $destination = $status->backupDestination()
                 <x-arc:card-header>@lang('Monitor Status')</x-arc:card-header>
                 <x-arc:card-table>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Name')</th>
+                        <x-arc:table-th label="Name"/>
                         <td class="text-right small">{{ $destination->backupName() }}</td>
                     </tr>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Disk')</th>
+                        <x-arc:table-th label="Disk"/>
                         <td class="text-right small font-monospace">{{ $destination->diskName() }}</td>
                     </tr>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Reachable')</th>
+                        <x-arc:table-th label="Reachable"/>
                         <td class="text-right small">
                             @if ($destination->isReachable())
                                 <span class="badge border border-success text-muted">@lang('Yes')</span>
@@ -34,7 +34,7 @@ $destination = $status->backupDestination()
                         </td>
                     </tr>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Healthy')</th>
+                        <x-arc:table-th label="Healthy"/>
                         <td class="text-right small">
                             @if ($status->isHealthy())
                                 <span class="badge border border-success text-muted">@lang('Yes')</span>
@@ -44,17 +44,17 @@ $destination = $status->backupDestination()
                         </td>
                     </tr>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Backups')</th>
+                        <x-arc:table-th label="Backups"/>
                         <td class="text-right small">
                             @if ($destination->isReachable())
-                                {{ arcanesoft\ui\count_pill($destination->backups()->count()) }}
+                                <x-arc:badge-count value="{{ $destination->backups()->count() }}"/>
                             @else
                                 <span class="badge text-muted">-</span>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Newest Backup')</th>
+                        <x-arc:table-th label="Newest Backup"/>
                         <td class="text-right small">
                             @if ($destination->isReachable() && $destination->newestBackup())
                                 <small>{{ $destination->newestBackup()->date()->diffForHumans() ?: 'null' }}</small>
@@ -64,7 +64,7 @@ $destination = $status->backupDestination()
                         </td>
                     </tr>
                     <tr>
-                        <th class="font-weight-light text-uppercase text-muted">@lang('Used Storage')</th>
+                        <x-arc:table-th label="Used Storage"/>
                         <td class="text-right small">
                             <span class="badge text-muted">{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}</span>
                         </td>
@@ -80,9 +80,9 @@ $destination = $status->backupDestination()
                 <x-arc:card-table class="table-hover">
                     <thead>
                         <tr>
-                            <x-arc:table-th>@lang('Date')</x-arc:table-th>
-                            <x-arc:table-th>@lang('Path')</x-arc:table-th>
-                            <x-arc:table-th class="text-right">@lang('Size')</x-arc:table-th>
+                            <x-arc:table-th label="Date"/>
+                            <x-arc:table-th label="Path"/>
+                            <x-arc:table-th label="Size" class="text-right"/>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,7 +109,4 @@ $destination = $status->backupDestination()
             </x-arc:card>
         </div>
     </div>
-@endsection
-
-@section('scripts')
 @endsection
