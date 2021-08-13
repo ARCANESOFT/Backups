@@ -1,15 +1,13 @@
-@extends(arcanesoft\foundation()->template())
+<x-arc:layout>
+    @section('page-title')
+        <i class="fa fa-fw fa-database"></i> @lang('Backups')
+    @endsection
 
-@section('page-title')
-    <i class="fa fa-fw fa-database"></i> @lang('Backups')
-@endsection
-
-@section('content')
     <x-arc:card>
         <x-arc:card-header>
             <div class="d-flex justify-content-between">
                 <span class="d-inline-block">@lang('Monitor Statuses')</span>
-                <div>
+                <div class="btn-separated">
                     @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('create'))
                         <a class="btn btn-xs btn-success" onclick="ARCANESOFT.emit('backups::backups.create')">
                             <i class="far fa-fw fa-save"></i> @lang('Run Backup')
@@ -34,7 +32,7 @@
                     <x-arc:table-th label="Backups" class="text-center"/>
                     <x-arc:table-th label="Newest Backup" class="text-center"/>
                     <x-arc:table-th label="Used Storage" class="text-center"/>
-                    <x-arc:table-th label="Actions" class="text-right"/>
+                    <x-arc:table-th label="Actions" class="text-end"/>
                 </tr>
             </thead>
             <tbody>
@@ -48,41 +46,39 @@
                     <td class="small">{{ $destination->backupName() }}</td>
                     <td class="small text-center">
                         @if ($destination->isReachable())
-                            <span class="badge border border-success text-muted">@lang('Yes')</span>
+                            <x-arc:badge type="success" label="Yes"/>
                         @else
-                            <span class="badge border border-danger text-muted">@lang('No')</span>
+                            <x-arc:badge type="danger" label="No"/>
                         @endif
                     </td>
                     <td class="small text-center">
                         @if ($status->isHealthy())
-                            <span class="badge border border-success text-muted">@lang('Yes')</span>
+                            <x-arc:badge type="success" label="Yes"/>
                         @else
-                            <span class="badge border border-danger text-muted">@lang('No')</span>
+                            <x-arc:badge type="danger" label="No"/>
                         @endif
                     </td>
                     <td class="small text-center">
                         @if ($destination->isReachable())
                             <x-arc:badge-count value="{{ $destination->backups()->count() }}"/>
                         @else
-                            <span class="badge text-muted">-</span>
+                            <x-arc:badge type="light" label="--"/>
                         @endif
                     </td>
                     <td class="small text-center">
                         @if ($destination->isReachable() && $destination->newestBackup())
                             {{ $destination->newestBackup()->date()->diffForHumans() ?: 'No backups present' }}
                         @else
-                            <span class="badge text-muted">-</span>
+                            <x-arc:badge type="light" label="--"/>
                         @endif
                     </td>
                     <td class="small text-center text-muted">
-                        <span class="badge text-muted">{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}</span>
+                        <x-arc:badge type="light" label="{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '--' }}"/>
                     </td>
-                    <td class="text-right">
+                    <td class="text-end">
                         @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('show'))
-                            <a href="{{ route('admin::backups.statuses.show', [$index]) }}"
-                               class="btn btn-sm btn-light" data-toggle="tooltip" title="@lang('Show')">
-                                <i class="far fa-fw fa-eye"></i>
-                            </a>
+                            <x-arc:table-action
+                                type="show" action="{{ route('admin::backups.statuses.show', [$index]) }}"/>
                         @endcan
                     </td>
                 </tr>
@@ -91,72 +87,72 @@
             </tbody>
         </x-arc:card-table>
     </x-arc:card>
-@endsection
 
-{{-- CREATE BACKUP MODAL/SCRIPT --}}
-@can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('create'))
-    @push('modals')
-        <x-arc:modal id="run-backups-modal" aria-labelledby="run-backups-modal-title" data-backdrop="static">
-            <x-arc:form action="{{ route('admin::backups.statuses.backup') }}" method="POST" id="run-backups-form">
-                <x-arc:modal-header>
-                    <x-arc:modal-title id="run-backups-modal-title">@lang('Run Backup')</x-arc:modal-title>
-                </x-arc:modal-header>
-                <x-arc:modal-body>@lang('Are you sure you want to run the backup ?')</x-arc:modal-body>
-                <x-arc:modal-footer class="justify-content-between">
-                    <x-arc:modal-cancel-button/>
-                    <button class="btn btn-success" type="submit">@lang('Backup')</button>
-                </x-arc:modal-footer>
-            </x-arc:form>
-        </x-arc:modal>
-    @endpush
+    {{-- CREATE BACKUP MODAL/SCRIPT --}}
+    @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('create'))
+        @push('modals')
+            <x-arc:modal id="run-backups-modal" aria-labelledby="run-backups-modal-title" data-backdrop="static">
+                <x-arc:form action="{{ route('admin::backups.statuses.backup') }}" method="POST" id="run-backups-form">
+                    <x-arc:modal-header>
+                        <x-arc:modal-title id="run-backups-modal-title">@lang('Run Backup')</x-arc:modal-title>
+                    </x-arc:modal-header>
+                    <x-arc:modal-body>@lang('Are you sure you want to run the backup ?')</x-arc:modal-body>
+                    <x-arc:modal-footer class="justify-content-between">
+                        <x-arc:modal-cancel-button/>
+                        <button class="btn btn-success" type="submit">@lang('Backup')</button>
+                    </x-arc:modal-footer>
+                </x-arc:form>
+            </x-arc:modal>
+        @endpush
 
-    @push('scripts')
-        <script defer>
-            let runBackupsModal = components.modal('div#run-backups-modal')
-            let runBackupsForm  = components.form('form#run-backups-form')
+        @push('scripts')
+            <script defer>
+                let runBackupsModal = components.modal('div#run-backups-modal')
+                let runBackupsForm  = components.form('form#run-backups-form')
 
-            ARCANESOFT.on('backups::backups.create', () => {
-                runBackupsModal.show()
-            })
+                ARCANESOFT.on('backups::backups.create', () => {
+                    runBackupsModal.show()
+                })
 
-            runBackupsForm.onSubmit('POST', () => {
-                runBackupsModal.hide()
-                location.reload()
-            })
-        </script>
-    @endpush
-@endcan
+                runBackupsForm.onSubmit('POST', () => {
+                    runBackupsModal.hide()
+                    location.reload()
+                })
+            </script>
+        @endpush
+    @endcan
 
 
-@can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('delete'))
-    @push('modals')
-        <x-arc:modal id="clear-backups-modal" aria-labelledby="clear-backups-modal-title" data-backdrop="static">
-            <x-arc:form action="{{ route('admin::backups.statuses.clear') }}" method="POST" id="clear-backups-form">
-                <x-arc:modal-header>
-                    <x-arc:modal-title id="clear-backups-modal-title">@lang('Cleanup Backups')</x-arc:modal-title>
-                </x-arc:modal-header>
-                <x-arc:modal-body>@lang('Are you sure you want to cleanup the backups ?')</x-arc:modal-body>
-                <x-arc:modal-footer class="justify-content-between">
-                    <x-arc:modal-cancel-button/>
-                    <button class="btn btn-warning" type="submit">@lang('Cleanup')</button>
-                </x-arc:modal-footer>
-            </x-arc:form>
-        </x-arc:modal>
-    @endpush
+    @can(Arcanesoft\Backups\Policies\StatusesPolicy::ability('delete'))
+        @push('modals')
+            <x-arc:modal id="clear-backups-modal" aria-labelledby="clear-backups-modal-title" data-backdrop="static">
+                <x-arc:form action="{{ route('admin::backups.statuses.clear') }}" method="POST" id="clear-backups-form">
+                    <x-arc:modal-header>
+                        <x-arc:modal-title id="clear-backups-modal-title">@lang('Cleanup Backups')</x-arc:modal-title>
+                    </x-arc:modal-header>
+                    <x-arc:modal-body>@lang('Are you sure you want to cleanup the backups ?')</x-arc:modal-body>
+                    <x-arc:modal-footer class="justify-content-between">
+                        <x-arc:modal-cancel-button/>
+                        <button class="btn btn-warning" type="submit">@lang('Cleanup')</button>
+                    </x-arc:modal-footer>
+                </x-arc:form>
+            </x-arc:modal>
+        @endpush
 
-    @push('scripts')
-        <script defer>
-            let clearBackupsModal = components.modal('div#clear-backups-modal')
-            let clearBackupsForm  = components.form('form#clear-backups-form')
+        @push('scripts')
+            <script defer>
+                let clearBackupsModal = components.modal('div#clear-backups-modal')
+                let clearBackupsForm  = components.form('form#clear-backups-form')
 
-            ARCANESOFT.on('backups::backups.clear', () => {
-                clearBackupsModal.show()
-            })
+                ARCANESOFT.on('backups::backups.clear', () => {
+                    clearBackupsModal.show()
+                })
 
-            clearBackupsForm.onSubmit('POST', () => {
-                clearBackupsModal.hide()
-                location.reload()
-            })
-        </script>
-    @endpush
-@endcan
+                clearBackupsForm.onSubmit('POST', () => {
+                    clearBackupsModal.hide()
+                    location.reload()
+                })
+            </script>
+        @endpush
+    @endcan
+</x-arc:layout>

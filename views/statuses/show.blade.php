@@ -1,15 +1,13 @@
-@extends(arcanesoft\foundation()->template())
-
-@section('page-title')
-    <i class="fa fa-fw fa-database"></i> @lang('Backups')
-@endsection
-
 <?php
 /** @var  Arcanedev\LaravelBackup\Entities\BackupDestinationStatus  $status */
 $destination = $status->backupDestination()
 ?>
 
-@section('content')
+<x-arc:layout>
+    @section('page-title')
+        <i class="fa fa-fw fa-database"></i> @lang('Backups')
+    @endsection
+
     <div class="row">
         <div class="col-md-4">
             <x-arc:card>
@@ -17,56 +15,56 @@ $destination = $status->backupDestination()
                 <x-arc:card-table>
                     <tr>
                         <x-arc:table-th label="Name"/>
-                        <td class="text-right small">{{ $destination->backupName() }}</td>
+                        <td class="text-end small">{{ $destination->backupName() }}</td>
                     </tr>
                     <tr>
                         <x-arc:table-th label="Disk"/>
-                        <td class="text-right small font-monospace">{{ $destination->diskName() }}</td>
+                        <td class="text-end small font-monospace">{{ $destination->diskName() }}</td>
                     </tr>
                     <tr>
                         <x-arc:table-th label="Reachable"/>
-                        <td class="text-right small">
+                        <td class="text-end small">
                             @if ($destination->isReachable())
-                                <span class="badge border border-success text-muted">@lang('Yes')</span>
+                                <x-arc:badge type="success" label="Yes"/>
                             @else
-                                <span class="badge border border-danger text-muted">@lang('No')</span>
+                                <x-arc:badge type="danger" label="No"/>
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <x-arc:table-th label="Healthy"/>
-                        <td class="text-right small">
+                        <td class="text-end small">
                             @if ($status->isHealthy())
-                                <span class="badge border border-success text-muted">@lang('Yes')</span>
+                                <x-arc:badge type="success" label="Yes"/>
                             @else
-                                <span class="badge border border-danger text-muted">@lang('No')</span>
+                                <x-arc:badge type="danger" label="No"/>
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <x-arc:table-th label="Backups"/>
-                        <td class="text-right small">
+                        <td class="text-end small">
                             @if ($destination->isReachable())
                                 <x-arc:badge-count value="{{ $destination->backups()->count() }}"/>
                             @else
-                                <span class="badge text-muted">-</span>
+                                <x-arc:badge type="light" label="--"/>
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <x-arc:table-th label="Newest Backup"/>
-                        <td class="text-right small">
+                        <td class="text-end small">
                             @if ($destination->isReachable() && $destination->newestBackup())
-                                <small>{{ $destination->newestBackup()->date()->diffForHumans() ?: 'null' }}</small>
+                                {{ $destination->newestBackup()->date()->diffForHumans() ?: 'null' }}
                             @else
-                                <span class="badge text-muted">-</span>
+                                <x-arc:badge type="light" label="--"/>
                             @endif
                         </td>
                     </tr>
                     <tr>
                         <x-arc:table-th label="Used Storage"/>
-                        <td class="text-right small">
-                            <span class="badge text-muted">{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '-' }}</span>
+                        <td class="text-end small">
+                            <x-arc:badge type="light" label="{{ $destination->isReachable() ? $destination->humanReadableUsedStorage() : '--' }}"/>
                         </td>
                     </tr>
                 </x-arc:card-table>
@@ -82,7 +80,7 @@ $destination = $status->backupDestination()
                         <tr>
                             <x-arc:table-th label="Date"/>
                             <x-arc:table-th label="Path"/>
-                            <x-arc:table-th label="Size" class="text-right"/>
+                            <x-arc:table-th label="Size" class="text-end"/>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,7 +93,7 @@ $destination = $status->backupDestination()
                             <td>
                                 <span class="badge badge-inverse">{{ $backup->path() }}</span>
                             </td>
-                            <td class="text-right">
+                            <td class="text-end">
                                 <span class="badge badge-default">{{ $backup->humanReadableSize() }}</span>
                             </td>
                         </tr>
@@ -109,4 +107,4 @@ $destination = $status->backupDestination()
             </x-arc:card>
         </div>
     </div>
-@endsection
+</x-arc:layout>
