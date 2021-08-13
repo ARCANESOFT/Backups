@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Arcanesoft\Backups\Tests;
+namespace Arcanesoft\Backups\Database;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
+use Arcanesoft\Backups\Database\Seeders\{PermissionsSeeder, RolesSeeder};
+use Arcanesoft\Foundation\Support\Database\Seeder;
 
 /**
- * Class     TestCase
+ * Class     DatabaseSeeder
  *
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class TestCase extends BaseTestCase
+class DatabaseSeeder extends Seeder
 {
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -19,16 +20,15 @@ abstract class TestCase extends BaseTestCase
      */
 
     /**
-     * Get package providers.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
+     * Get the seeders.
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    public function seeders(): array
     {
         return [
-            \Arcanesoft\Backups\BackupsServiceProvider::class,
+            PermissionsSeeder::class,
+            RolesSeeder::class,
         ];
     }
 }

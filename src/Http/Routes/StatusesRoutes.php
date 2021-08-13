@@ -1,6 +1,10 @@
-<?php namespace Arcanesoft\Backups\Http\Routes;
+<?php
 
-use Arcanedev\Support\Routing\RouteRegistrar;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Http\Routes;
+
+use Arcanesoft\Backups\Http\Controllers\StatusesController;
 
 /**
  * Class     StatusesRoutes
@@ -8,7 +12,7 @@ use Arcanedev\Support\Routing\RouteRegistrar;
  * @package  Arcanesoft\Backups\Http\Routes
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class StatusesRoutes extends RouteRegistrar
+class StatusesRoutes extends AbstractRouteRegistrar
 {
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -18,22 +22,28 @@ class StatusesRoutes extends RouteRegistrar
     /**
      * Map the routes for the application.
      */
-    public function map()
+    public function map(): void
     {
-        $this->prefix('statuses')->as('statuses.')->group(function () {
-            $this->get('/', 'StatusesController@index')
-                 ->name('index');  // admin::backups.statuses.index
+        $this->adminGroup(function () {
+            $this->prefix('statuses')->as('statuses.')->group(function () {
+                // admin::backups.statuses.index
+                $this->get('/', [StatusesController::class, 'index'])
+                     ->name('index');
 
-            $this->post('backup', 'StatusesController@backup')
-                 ->middleware('ajax')
-                 ->name('backup'); // admin::backups.statuses.backup
+                // admin::backups.statuses.backup
+                $this->post('backup', [StatusesController::class, 'backup'])
+                     ->middleware(['ajax'])
+                     ->name('backup');
 
-            $this->post('clear', 'StatusesController@clear')
-                 ->middleware('ajax')
-                 ->name('clear');  // admin::backups.statuses.clear
+                // admin::backups.statuses.clear
+                $this->post('clear', [StatusesController::class, 'clear'])
+                     ->middleware(['ajax'])
+                     ->name('clear');
 
-            $this->get('{index}', 'StatusesController@show')
-                 ->name('show');   // admin::backups.statuses.clear
+                // admin::backups.statuses.clear
+                $this->get('{index}', [StatusesController::class, 'show'])
+                     ->name('show');
+            });
         });
     }
 }

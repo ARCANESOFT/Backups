@@ -1,11 +1,15 @@
-<?php namespace Arcanesoft\Backups;
+<?php
 
-use Arcanesoft\Core\Bases\PackageServiceProvider;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups;
+
+use Arcanesoft\Backups\Console\PublishCommand;
+use Arcanesoft\Foundation\Support\Providers\PackageServiceProvider;
 
 /**
  * Class     BackupsServiceProvider
  *
- * @package  Arcanesoft\Backups
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class BackupsServiceProvider extends PackageServiceProvider
@@ -22,6 +26,13 @@ class BackupsServiceProvider extends PackageServiceProvider
      */
     protected $package = 'backups';
 
+    /**
+     * Merge multiple config files into one instance (package name as root key)
+     *
+     * @var bool
+     */
+    protected $multiConfigs = true;
+
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
@@ -30,44 +41,32 @@ class BackupsServiceProvider extends PackageServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
-        parent::register();
-
         $this->registerConfig();
-        $this->registerSidebarItems();
 
         $this->registerProviders([
-            Providers\PackagesServiceProvider::class,
-            Providers\AuthorizationServiceProvider::class,
+            Providers\AuthServiceProvider::class,
             Providers\RouteServiceProvider::class,
         ]);
-        $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);
+
+        $this->registerCommands([
+            PublishCommand::class,
+        ]);
     }
 
     /**
      * Boot the service provider.
      */
-    public function boot()
+    public function boot(): void
     {
-        parent::boot();
+        $this->loadTranslations();
+        $this->loadViews();
 
-        // Publishes
-        $this->publishConfig();
-        $this->publishViews();
-        $this->publishTranslations();
-        $this->publishSidebarItems();
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            //
-        ];
+        if ($this->app->runningInConsole()) {
+            $this->publishConfig();
+            $this->publishTranslations();
+            $this->publishViews();
+        }
     }
 }

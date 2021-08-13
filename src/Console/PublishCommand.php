@@ -1,12 +1,15 @@
-<?php namespace Arcanesoft\Backups\Console;
+<?php
 
-use Arcanedev\Support\Bases\Command;
+declare(strict_types=1);
+
+namespace Arcanesoft\Backups\Console;
+
 use Arcanesoft\Backups\BackupsServiceProvider;
+use Illuminate\Console\Command;
 
 /**
  * Class     PublishCommand
  *
- * @package  Arcanesoft\Backups\Console
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class PublishCommand extends Command
